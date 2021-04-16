@@ -23,13 +23,6 @@ class ViewController: UIViewController {
         return lineChart
     }()
     
-//    let lineChartView: LineChartView = {
-//        let view = LineChartView(custom: true)
-//        view.isUserInteractionEnabled = false
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
-    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.estimatedItemSize = CGSize(width: 108, height: 166)
@@ -45,7 +38,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        updateChartData(with: [0, 0, 0])
+        updateChartData(with: [0, 0, 0, 0, 0, 0, 0, 0, 0])
         view.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
         dataSource.delegate = self
     }
@@ -80,34 +73,13 @@ class ViewController: UIViewController {
     }
     
     private func updateChartData(with numbers: [Double]) {
-        //        var lineChartEntry = [ChartDataEntry]()
-        //        for i in 0..<numbers.count {
-        //            let value = ChartDataEntry(x: Double(i), y: numbers[i])
-        //            lineChartEntry.append(value)
-        //        }
-        //        let line1 = LineChartDataSet(entries: lineChartEntry, label: "")
-        //        line1.valueFont = UIFont(name: "OpenSans", size: 12)!
-        //        line1.valueTextColor = NSUIColor(cgColor: UIColor.gray.cgColor)
-        //        line1.lineWidth = 3
-        //        line1.setColor(NSUIColor(red: 170/255, green: 243/255, blue: 244/255, alpha: 1))
-        //        line1.setCircleColor(NSUIColor(cgColor: UIColor.black.cgColor))
-        //        line1.drawCircleHoleEnabled = false
-        //        line1.circleRadius = 3.32
-        //        line1.mode = .horizontalBezier
-        //        let data = LineChartData()
-        //        data.addDataSet(line1)
-        //        lineChartView.data = data
         
-        //        lineChart.dataEntries = numbers.map({ (number) -> PointEntry in
-        //            return PointEntry(value: Int(number), label: "\(number)")
-        //        })
-        
-        var kek: [PointEntry] = []
+        var entries: [PointEntry] = []
         numbers.forEach { (number) in
             let entry = PointEntry(value: Int(number), label: "\(number)")
-            kek.append(entry)
+            entries.append(entry)
         }
-        lineChart.dataEntries = kek
+        lineChart.dataEntries = entries
     }
 }
 

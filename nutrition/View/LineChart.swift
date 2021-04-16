@@ -24,7 +24,7 @@ extension PointEntry: Comparable {
 class LineChart: UIView {
     
     /// gap between each point
-    var lineGap: CGFloat = 165.0
+    var lineGap: CGFloat = 53.0
     
     /// preseved space at top of the chart
     let topSpace: CGFloat = 40.0
@@ -80,11 +80,13 @@ class LineChart: UIView {
         if let dataEntries = dataEntries {
             mainLayer.frame = CGRect(x: 0, y: 0, width: CGFloat(dataEntries.count) * lineGap, height: self.frame.size.height)
             dataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
+            print(dataEntries)
             dataPoints = convertDataEntriesToPoints(entries: dataEntries)
+            print(dataPoints)
             clean()
             drawDots()
             drawCurvedChart()
-//            drawLables()
+            drawLables()
         }
     }
     
@@ -101,7 +103,7 @@ class LineChart: UIView {
             }
             for i in 0..<entries.count {
                 let height = dataLayer.frame.height * (1 - ((CGFloat(entries[i].value) - CGFloat(min)) / minMaxRange))
-                let point = CGPoint(x: CGFloat(i)*lineGap + 40, y: height)
+                let point = CGPoint(x: CGFloat(i)*lineGap, y: height)
                 result.append(point)
             }
 //            result.forEach { (point) in
@@ -135,17 +137,47 @@ class LineChart: UIView {
     private func drawLables() {
         if let dataEntries = dataEntries,
             dataEntries.count > 0 {
-            for i in 0..<dataEntries.count {
-                let textLayer = CATextLayer()
-                textLayer.frame = CGRect(x: lineGap*CGFloat(i) - lineGap/2 + 40, y: mainLayer.frame.size.height - bottomSpace/2 - 8, width: lineGap, height: 16)
-                textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
-                textLayer.backgroundColor = UIColor.clear.cgColor
-                textLayer.alignmentMode = CATextLayerAlignmentMode.center
-                textLayer.contentsScale = UIScreen.main.scale
-                textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
-                textLayer.fontSize = 11
-                textLayer.string = dataEntries[i].label
-                mainLayer.addSublayer(textLayer)
+            if let dataPoints = dataPoints {
+                for i in 0..<dataPoints.count {
+                    if i == 1 || i == 4 || i == 7 {
+                        let xValue = dataPoints[i].x - outerRadius/2
+                        let yValue = (dataPoints[i].y + lineGap) - (outerRadius * 2)
+                        
+                        let textLayer = CATextLayer()
+                        textLayer.frame = CGRect(x: xValue-11, y: yValue-10, width: 37, height: 16)
+                        
+                        textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
+                        textLayer.backgroundColor = UIColor.clear.cgColor
+                        textLayer.alignmentMode = CATextLayerAlignmentMode.center
+                        textLayer.contentsScale = UIScreen.main.scale
+                        textLayer.font = UIFont(name: "OpenSans", size: 12)
+                        textLayer.fontSize = 12
+                        textLayer.string = dataEntries[i].label
+                        mainLayer.addSublayer(textLayer)
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     Create Dots on line points
+     */
+    private func drawDots() {
+        var dotLayers: [DotCALayer] = []
+        if let dataPoints = dataPoints {
+            for i in 0..<dataPoints.count {
+                if i == 1 || i == 4 || i == 7 {
+                    let xValue = dataPoints[i].x - outerRadius/2
+                    let yValue = (dataPoints[i].y + lineGap) - (outerRadius * 2)
+                    let dotLayer = DotCALayer()
+                    dotLayer.backgroundColor = UIColor.white.cgColor
+                    dotLayer.cornerRadius = outerRadius / 2
+                    dotLayer.frame = CGRect(x: xValue, y: yValue+4, width: outerRadius, height: outerRadius)
+                    dotLayers.append(dotLayer)
+
+                    mainLayer.addSublayer(dotLayer)
+                }
             }
         }
     }
@@ -159,28 +191,6 @@ class LineChart: UIView {
             }
         })
         dataLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
-    }
-    /**
-     Create Dots on line points
-     */
-    private func drawDots() {
-        var dotLayers: [DotCALayer] = []
-        if let dataPoints = dataPoints {
-            for dataPoint in dataPoints {
-                let xValue = dataPoint.x - outerRadius/2
-                let yValue = (dataPoint.y + lineGap) - (outerRadius * 2)
-//                print("dot x: \(xValue)  y: \(yValue)" )
-                let dotLayer = DotCALayer()
-//                dotLayer.dotInnerColor = UIColor.black
-//                dotLayer.innerRadius = innerRadius
-                dotLayer.backgroundColor = UIColor.white.cgColor
-                dotLayer.cornerRadius = outerRadius / 2
-                dotLayer.frame = CGRect(x: xValue, y: yValue-105, width: outerRadius, height: outerRadius)
-                dotLayers.append(dotLayer)
-
-                mainLayer.addSublayer(dotLayer)
-            }
-        }
     }
     
     private func hexStringToUIColor (hex:String) -> UIColor {

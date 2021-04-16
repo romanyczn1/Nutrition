@@ -38,7 +38,9 @@ final class ViewControllerDataModel {
         var eatings = 0
         data.forEach { (eating) in
             eatings += eating.kcal
+            numbers.append(0)
             numbers.append(Double(eating.kcal))
+            numbers.append(0)
         }
         let total = eatings - Constants.burnt
         delegate?.updateViews(eating: eatings, total: total, graphNumbers: numbers)
