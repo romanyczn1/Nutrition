@@ -81,8 +81,8 @@ class LineChart: UIView {
             mainLayer.frame = CGRect(x: 0, y: 0, width: CGFloat(dataEntries.count) * lineGap, height: self.frame.size.height)
             dataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
             dataPoints = convertDataEntriesToPoints(entries: dataEntries)
-//            drawDots()
             clean()
+            drawDots()
             drawCurvedChart()
 //            drawLables()
         }
@@ -152,7 +152,9 @@ class LineChart: UIView {
     
     private func clean() {
         mainLayer.sublayers?.forEach({
-            if $0 is CATextLayer {
+            if $0 is CATextLayer{
+                $0.removeFromSuperlayer()
+            } else if $0 is DotCALayer {
                 $0.removeFromSuperlayer()
             }
         })
