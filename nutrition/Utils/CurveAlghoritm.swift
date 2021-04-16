@@ -61,7 +61,6 @@ class CurveAlgorithm {
     func createCurvedPath(_ dataPoints: [CGPoint]) -> UIBezierPath? {
         let path = UIBezierPath()
         path.move(to: dataPoints[0])
-//        print(dataPoints)
         var curveSegments: [CurvedSegment] = []
         curveSegments = controlPointsFrom(points: dataPoints)
         

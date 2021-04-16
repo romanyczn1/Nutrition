@@ -63,7 +63,7 @@ class LineChart: UIView {
     
     convenience init() {
         self.init(frame: CGRect.zero)
-//        setupView()
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -78,11 +78,9 @@ class LineChart: UIView {
     
     override func layoutSubviews() {
         if let dataEntries = dataEntries {
-            mainLayer.frame = CGRect(x: 0, y: 0, width: CGFloat(dataEntries.count) * lineGap, height: self.frame.size.height)
+            mainLayer.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.size.height)
             dataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
-            print(dataEntries)
             dataPoints = convertDataEntriesToPoints(entries: dataEntries)
-            print(dataPoints)
             clean()
             drawDots()
             drawCurvedChart()
@@ -106,9 +104,6 @@ class LineChart: UIView {
                 let point = CGPoint(x: CGFloat(i)*lineGap, y: height)
                 result.append(point)
             }
-//            result.forEach { (point) in
-//                print("x: \(point.x) y: \(point.y)")
-//            }
             return result
         }
         return []
