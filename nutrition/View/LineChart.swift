@@ -139,7 +139,7 @@ class LineChart: UIView {
                         let yValue = (dataPoints[i].y + lineGap) - (outerRadius * 2)
                         
                         let textLayer = CATextLayer()
-                        textLayer.frame = CGRect(x: xValue-11, y: yValue-10, width: 37, height: 16)
+                        textLayer.frame = CGRect(x: xValue-12, y: yValue-10, width: 37, height: 16)
                         
                         textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
                         textLayer.backgroundColor = UIColor.clear.cgColor

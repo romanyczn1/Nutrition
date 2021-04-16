@@ -76,7 +76,7 @@ class ViewController: UIViewController {
         
         var entries: [PointEntry] = []
         numbers.forEach { (number) in
-            let entry = PointEntry(value: Int(number), label: "\(number)")
+            let entry = PointEntry(value: Int(number), label: "\(Int(number))")
             entries.append(entry)
         }
         lineChart.dataEntries = entries
